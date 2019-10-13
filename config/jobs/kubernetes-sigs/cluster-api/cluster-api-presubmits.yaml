@@ -104,3 +104,35 @@ presubmits:
     annotations:
       testgrid-dashboards: sig-cluster-lifecycle-cluster-api
       testgrid-tab-name: pr-integration
+  - name: pull-cluster-api-bootstrap-provider-kubeadm
+    labels:
+      preset-service-account: "true"
+    decorate: true
+    path_alias: sigs.k8s.io/cluster-api
+    always_run: false
+    run_if_changed: '^bootstrap\/kubeadm\/.*$'
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20191009-4f1de38-master
+        command:
+        - runner.sh
+        - ./scripts/ci-cabpk.sh
+    annotations:
+      testgrid-dashboards: sig-cluster-lifecycle-cluster-api
+      testgrid-tab-name: pr-cabpk
+  - name: pull-cluster-api-provider-docker
+    labels:
+      preset-service-account: "true"
+    decorate: true
+    path_alias: sigs.k8s.io/cluster-api
+    always_run: false
+    run_if_changed: '^test\/infrastructure\/docker\/.*$'
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20191009-4f1de38-master
+        command:
+        - runner.sh
+        - ./scripts/ci-capd.sh
+    annotations:
+      testgrid-dashboards: sig-cluster-lifecycle-cluster-api
+      testgrid-tab-name: pr-capd
